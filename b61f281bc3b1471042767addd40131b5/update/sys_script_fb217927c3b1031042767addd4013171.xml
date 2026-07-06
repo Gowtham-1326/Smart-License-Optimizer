@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_1904737_smart_0_renewal_review</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Analyze License Renewal</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous) {
+
+    var assignmentId = current.getValue('assignment');
+
+    var analyzer = new LicenseRenewalAnalyzer();
+
+    var result = analyzer.analyzeLicense(assignmentId);
+
+    // Set analysis results
+    current.setValue(
+        'days_since_last_use',
+        result.daysSinceLastUse
+    );
+
+    current.setValue(
+        'usage_score',
+        result.usageScore
+    );
+
+    current.setValue(
+        'cost_score',
+        result.costScore
+    );
+
+    current.setValue(
+        'renewal_score',
+        result.renewalScore
+    );
+
+    current.setValue(
+        'recommendation',
+        result.recommendation
+    );
+
+    current.setValue(
+        'potential_saving',
+        result.potentialSaving
+    );
+
+
+    // Calculate Days to Expiry
+    var license = new GlideRecord(
+        'x_1904737_smart_0_software_license'
+    );
+
+    if (license.get(current.getValue('license'))) {
+
+        var expiryDate = new GlideDateTime(
+            license.getValue('expiry_date')
+        );
+
+        var today = new GlideDateTime();
+
+        var difference = GlideDateTime.subtract(
+            today,
+            expiryDate
+        );
+
+        var daysToExpiry = Math.floor(
+            difference.getNumericValue() / 86400000
+        );
+
+        current.setValue(
+            'days_to_expiry',
+            daysToExpiry
+        );
+    }
+
+
+    // Update review details
+    current.setValue(
+        'review_date',
+        new GlideDate()
+    );
+
+    current.setValue(
+        'review_status',
+        'analysis_completed'
+    );
+    if (result.recommendation == 'do_not_renew') {
+
+        gs.eventQueue(
+            'x_1904737_smart_0.high_waste_license',
+            current,
+            current.getValue('license'),
+            current.getValue('assignment')
+        );
+
+    }
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-07-06 18:16:23</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>fb217927c3b1031042767addd4013171</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Analyze License Renewal</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Smart License Optimizer" source="x_1904737_smart_0">b61f281bc3b1471042767addd40131b5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Smart License Optimizer">b61f281bc3b1471042767addd40131b5</sys_scope>
+        <sys_update_name>sys_script_fb217927c3b1031042767addd4013171</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-07-06 19:10:05</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=fb217927c3b1031042767addd4013171"/>
+</record_update>

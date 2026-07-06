@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_user_role">
+    <sys_user_role action="INSERT_OR_UPDATE">
+        <assignable_by/>
+        <can_delegate>true</can_delegate>
+        <description>test 1 role</description>
+        <elevated_privilege>false</elevated_privilege>
+        <federated_id>bUbfP70tj3phgU9gLmvz/Nc5vMG5IST+kDsk5d5Q6hQ=</federated_id>
+        <grantable>true</grantable>
+        <includes_roles/>
+        <name>x_1904737_smart_0.finance_viewer</name>
+        <scoped_admin>false</scoped_admin>
+        <suffix>finance_viewer</suffix>
+        <sys_class_name>sys_user_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-07-06 19:43:10</sys_created_on>
+        <sys_id>b6354a2fc335031042767addd4013110</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>x_1904737_smart_0.finance_viewer</sys_name>
+        <sys_package display_value="Smart License Optimizer" source="x_1904737_smart_0">b61f281bc3b1471042767addd40131b5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Smart License Optimizer">b61f281bc3b1471042767addd40131b5</sys_scope>
+        <sys_update_name>sys_user_role_b6354a2fc335031042767addd4013110</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-07-06 19:52:46</sys_updated_on>
+    </sys_user_role>
+</record_update>

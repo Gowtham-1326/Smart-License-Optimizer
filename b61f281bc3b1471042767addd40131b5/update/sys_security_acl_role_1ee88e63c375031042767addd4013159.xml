@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl_role">
+    <sys_security_acl_role action="INSERT_OR_UPDATE">
+        <sys_class_name>sys_security_acl_role</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-07-06 19:59:05</sys_created_on>
+        <sys_id>1ee88e63c375031042767addd4013159</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>.license_viewer</sys_name>
+        <sys_package display_value="Smart License Optimizer" source="x_1904737_smart_0">b61f281bc3b1471042767addd40131b5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Smart License Optimizer">b61f281bc3b1471042767addd40131b5</sys_scope>
+        <sys_security_acl display_value="">abb84ae3c375031042767addd4013171</sys_security_acl>
+        <sys_update_name>sys_security_acl_role_1ee88e63c375031042767addd4013159</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-07-06 19:59:05</sys_updated_on>
+        <sys_user_role display_value="license_viewer" name="license_viewer">09f82a265b2421103755f6d28281c766</sys_user_role>
+    </sys_security_acl_role>
+</record_update>

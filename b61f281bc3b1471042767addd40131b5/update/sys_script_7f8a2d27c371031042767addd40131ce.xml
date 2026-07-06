@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_1904737_smart_0_usage_record</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Update Usage Statistics</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous) {
+
+    var assignmentId = current.getValue('license_assignment');
+
+    var count30 = 0;
+    var count90 = 0;
+
+    // Calculate date 30 days ago
+    var date30 = new GlideDateTime();
+    date30.addDaysUTC(-30);
+
+    // Calculate date 90 days ago
+    var date90 = new GlideDateTime();
+    date90.addDaysUTC(-90);
+
+
+    // Count usage records in last 30 days
+    var usage30 = new GlideRecord(
+        'x_1904737_smart_0_usage_record'
+    );
+
+    usage30.addQuery(
+        'license_assignment',
+        assignmentId
+    );
+
+    usage30.addQuery(
+        'usage_date',
+        '>=',
+        date30
+    );
+
+    usage30.query();
+
+    while (usage30.next()) {
+        count30++;
+    }
+
+
+    // Count usage records in last 90 days
+    var usage90 = new GlideRecord(
+        'x_1904737_smart_0_usage_record'
+    );
+
+    usage90.addQuery(
+        'license_assignment',
+        assignmentId
+    );
+
+    usage90.addQuery(
+        'usage_date',
+        '>=',
+        date90
+    );
+
+    usage90.query();
+
+    while (usage90.next()) {
+        count90++;
+    }
+
+
+    // Get License Assignment
+    var assignment = new GlideRecord(
+        'x_1904737_smart_0_license_assignment'
+    );
+
+    if (assignment.get(assignmentId)) {
+
+        // Update usage counts
+        assignment.setValue(
+            'usage_count_30_days',
+            count30
+        );
+
+        assignment.setValue(
+            'usage_count_90_days',
+            count90
+        );
+
+
+        // Calculate Usage Status
+        if (count90 == 0) {
+
+            assignment.setValue(
+                'usage_status',
+                'never_used'
+            );
+
+        } else if (count30 == 0) {
+
+            assignment.setValue(
+                'usage_status',
+                'inactive'
+            );
+
+        } else if (count30 < 5) {
+
+            assignment.setValue(
+                'usage_status',
+                'low_usage'
+            );
+
+        } else {
+
+            assignment.setValue(
+                'usage_status',
+                'active'
+            );
+
+        }
+
+
+        // Update License Assignment
+        assignment.update();
+    }
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-07-06 17:48:08</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>7f8a2d27c371031042767addd40131ce</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Update Usage Statistics</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Smart License Optimizer" source="x_1904737_smart_0">b61f281bc3b1471042767addd40131b5</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Smart License Optimizer">b61f281bc3b1471042767addd40131b5</sys_scope>
+        <sys_update_name>sys_script_7f8a2d27c371031042767addd40131ce</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-07-06 17:51:24</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=7f8a2d27c371031042767addd40131ce"/>
+</record_update>

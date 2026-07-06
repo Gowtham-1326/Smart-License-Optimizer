@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_1904737_smart_0.LicenseRenewalAnalyzer</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <mobile_callable>false</mobile_callable>
+        <name>LicenseRenewalAnalyzer</name>
+        <sandbox_callable>false</sandbox_callable>
+        <script><![CDATA[var LicenseRenewalAnalyzer = Class.create();
+
+LicenseRenewalAnalyzer.prototype = {
+
+    initialize: function() {},
+
+    analyzeLicense: function(assignmentId) {
+
+        var result = {
+            daysSinceLastUse: 0,
+            usageScore: 0,
+            costScore: 0,
+            renewalScore: 0,
+            recommendation: '',
+            potentialSaving: 0
+        };
+
+        var assignment = new GlideRecord(
+            'x_1904737_smart_0_license_assignment'
+        );
+
+        if (!assignment.get(assignmentId)) {
+            return result;
+        }
+
+        // Calculate days since last usage
+        var lastUsed = assignment.getValue('last_used_date');
+
+        if (lastUsed) {
+
+            var today = new GlideDateTime();
+            var lastUsedDate = new GlideDateTime(lastUsed);
+
+            var difference = GlideDateTime.subtract(
+                lastUsedDate,
+                today
+            );
+
+            result.daysSinceLastUse =
+                Math.floor(difference.getNumericValue() / 86400000);
+        }
+
+
+        // Calculate Usage Score
+        var usage30 = parseInt(
+            assignment.getValue('usage_count_30_days'),
+            10
+        ) || 0;
+
+        var usage90 = parseInt(
+            assignment.getValue('usage_count_90_days'),
+            10
+        ) || 0;
+
+
+        if (usage90 == 0) {
+
+            result.usageScore = 60;
+
+        } else if (usage30 == 0) {
+
+            result.usageScore = 50;
+
+        } else if (usage30 < 5) {
+
+            result.usageScore = 30;
+
+        } else {
+
+            result.usageScore = 0;
+
+        }
+
+
+        // Get License
+        var license = new GlideRecord(
+            'x_1904737_smart_0_software_license'
+        );
+
+        if (!license.get(
+                assignment.getValue('license')
+            )) {
+            return result;
+        }
+
+
+        // Calculate Cost Score
+        var cost = parseFloat(
+            license.getValue('license_cost')
+        ) || 0;
+
+
+        if (cost >= 50000) {
+
+            result.costScore = 30;
+
+        } else if (cost >= 20000) {
+
+            result.costScore = 20;
+
+        } else {
+
+            result.costScore = 10;
+
+        }
+
+
+        // Final Renewal Score
+        result.renewalScore =
+            result.usageScore +
+            result.costScore;
+
+
+        // Recommendation
+        if (result.renewalScore >= 70) {
+
+            result.recommendation = 'do_not_renew';
+            result.potentialSaving = cost;
+
+        } else if (result.renewalScore >= 40) {
+
+            result.recommendation = 'review';
+
+        } else {
+
+            result.recommendation = 'renew';
+
+        }
+
+
+        return result;
+    },
+
+    type: 'LicenseRenewalAnalyzer'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2026-07-06 18:14:26</sys_created_on>
+        <sys_id>5830b9a3c3b1031042767addd40131ee</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>LicenseRenewalAnalyzer</sys_name>
+        <sys_package display_value="Smart License Optimizer" source="x_1904737_smart_0">b61f281bc3b1471042767addd40131b5</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Smart License Optimizer">b61f281bc3b1471042767addd40131b5</sys_scope>
+        <sys_update_name>sys_script_include_5830b9a3c3b1031042767addd40131ee</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2026-07-06 19:31:29</sys_updated_on>
+    </sys_script_include>
+</record_update>
