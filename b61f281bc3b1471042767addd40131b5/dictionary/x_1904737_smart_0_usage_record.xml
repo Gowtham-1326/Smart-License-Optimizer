@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="a8ff30dbc335471042767addd401319c" label="Usage Record" max_length="40" name="x_1904737_smart_0_usage_record" type="collection">
+        <element label="License assignment" mandatory="true" max_length="32" name="license_assignment" reference="x_1904737_smart_0_license_assignment" type="reference"/>
+        <element label="Usage date" mandatory="true" max_length="255" name="usage_date" type="glide_date_time"/>
+        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element choice="3" default="test_data" label="Source" mandatory="true" max_length="40" name="source" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="System integration" sequence="2" value="system_integration"/>
+                <element inactive_on_update="false" label="Appilcation API" sequence="0" value="appilcation_api"/>
+                <element inactive_on_update="false" label="Test data" sequence="3" value="test_data"/>
+                <element inactive_on_update="false" label="Manual import" sequence="1" value="manual_import"/>
+            </choice>
+        </element>
+        <element label="Usage duration" max_length="40" name="usage_duration" type="integer"/>
+        <index name="index">
+            <element name="license_assignment"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="87f7789bc3f1471042767addd4013101" label="Software License" max_length="40" name="x_1904737_smart_0_software_license" type="collection">
+        <element attributes="edge_encryption_enabled=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element choice="3" label="Status" mandatory="true" max_length="40" name="status" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Renewed" sequence="6" value="renewed"/>
+                <element inactive_on_update="false" label="Reclaimed" sequence="4" value="reclaimed"/>
+                <element inactive_on_update="false" label="Expiring" sequence="2" value="expiring"/>
+                <element inactive_on_update="false" label="Assigned" sequence="1" value="assigned"/>
+                <element inactive_on_update="false" label="Available" sequence="0" value="available"/>
+                <element inactive_on_update="false" label="Expired" sequence="5" value="expired"/>
+                <element inactive_on_update="false" label="Under review" sequence="3" value="under_review"/>
+            </choice>
+        </element>
+        <element label="License cost" mandatory="true" max_length="38" name="license_cost" type="currency"/>
+        <element label="Expiry date" mandatory="true" max_length="40" name="expiry_date" type="glide_date"/>
+        <element label="Purchase date" mandatory="true" max_length="40" name="purchase_date" type="glide_date"/>
+        <element label="Software product" mandatory="true" max_length="32" name="software_product" reference="x_1904737_smart_0_software_product" type="reference"/>
+        <index name="index">
+            <element name="software_product"/>
+        </index>
+    </element>
+</database>
